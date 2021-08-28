@@ -14,7 +14,7 @@ class BaseModel(models.Model):
 
 
 class City(BaseModel):
-    name = models.TextField(max_length=30, verbose_name='Nombre')
+    name = models.CharField(max_length=30, verbose_name='Nombre')
     width = models.IntegerField(verbose_name='Ancho')
     height = models.IntegerField(verbose_name='Alto')
     velocity = models.IntegerField(verbose_name='Velocidad')
@@ -34,6 +34,9 @@ class City(BaseModel):
             raise ValidationError({
                 'width': 'El valor del alto debe ser mayor a cero'
             })
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         ordering = ('name', )
@@ -71,6 +74,9 @@ class Location(models.Model):
         )
         return round(distance, 3)
 
+    def __str__(self):
+        return f'({self.pos_x}, {self.pos_y})'
+
     class Meta:
         db_table = 'location'
         verbose_name = 'Ubicación'
@@ -86,6 +92,9 @@ class Driver(BaseModel):
         Location, verbose_name='Ubicación del conductor', null=True,
         on_delete=models.PROTECT)
 
+    def __str__(self):
+        return self.identification
+
     class Meta:
         db_table = 'driver'
         verbose_name = 'Conductor'
@@ -99,6 +108,9 @@ class Customer(BaseModel):
     location = models.ForeignKey(
         Location, verbose_name='Ubicación del cliente', null=True,
         on_delete=models.PROTECT)
+
+    def __str__(self):
+        return self.identification
 
     class Meta:
         db_table = 'customer'
@@ -119,7 +131,42 @@ class GasStation(models.Model):
         Driver, on_delete=models.PROTECT, null=True,
         verbose_name='Conductor mas cercano')
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'gas_station'
         verbose_name = 'Gasolineria'
         verbose_name_plural = 'Gasolinerias'
+
+
+class Service(BaseModel):
+    class DeliveryStatuses(models.TextChoices):
+        NEW = 'new', 'Solicitado'
+        PICK_UP = 'pick_up', 'Recogiendo Gasolina'
+        ON_DELIVERY = 'on_delivery', 'Enviando'
+        DELIVERED = 'delivered', 'Entregado'
+        ABORTED = 'aborted', 'Cancelado'
+    date = models.DateTimeField(auto_now_add=True, verbose_name='Fecha')
+    requesting_client = models.ForeignKey(
+        Customer, on_delete=models.PROTECT,
+        verbose_name='Cliente que solicita el servicio.')
+    responsible_driver = models.ForeignKey(
+        Driver, on_delete=models.PROTECT, verbose_name='Conductor responsable')
+    nearby_gas_station = models.ForeignKey(
+        GasStation, on_delete=models.PROTECT,
+        verbose_name='Gasolinearia mas cercana')
+    status = models.CharField(
+        max_length=20, choices=DeliveryStatuses.choices,
+        default=DeliveryStatuses.NEW, verbose_name='Estado del pedido')
+    distance = models.IntegerField(verbose_name='Distancia')
+
+    def __str__(self):
+        return f'Servicio: (Cliente {self.requesting_client}) ' \
+               f'({self.get_status_display()})'
+
+    class Meta:
+        ordering = ('-date',)
+        db_table = 'service'
+        verbose_name = 'Servicio'
+        verbose_name_plural = 'Servicios'
