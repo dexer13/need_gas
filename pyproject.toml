@@ -10,6 +10,7 @@ Django = "^3.2.6"
 djangorestframework = "^3.12.4"
 Markdown = "^3.3.4"
 django-filter = "^2.4.0"
+requests = "^2.26.0"
 
 [tool.poetry.dev-dependencies]
 

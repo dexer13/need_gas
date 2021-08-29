@@ -89,25 +89,42 @@ class CustomerModelTest(TestCase):
         pass
 
     def test_customer_complete_data(self):
-        customer = Customer.objects.create(
-            name='Denis Cliente', identification='222')
+        customer = Customer.objects.create(identification='222')
         self.assertIsNotNone(customer.id)
 
     def test_relation_location(self):
         customer_location = Location.objects.create(pos_x=10, pos_y=30)
-        customer = Customer(name='Denis Cliente', identification='333',
+        customer = Customer(identification='333',
                             location=customer_location)
         customer.save()
         self.assertIsNotNone(customer.id)
     
     def test_customer_str(self):
-        customer = Customer(name='Denis Cliente', identification='333')
+        customer = Customer(identification='333')
         self.assertEqual(str(customer), '333', 'Should be 333')
 
 
 class GasStationModelTest(TestCase):
+    drivers_data = [
+        {'name': 'Juan', 'identification': '111', 'x': 20, 'y': 10,
+         'is_busy': False},
+        {'name': 'Angie', 'identification': '222', 'x': 15, 'y': 20,
+         'is_busy': False}
+    ]
+
     def setUp(self):
-        pass
+        self.__create_drivers()
+
+    def __create_drivers(self):
+        for driver in self.drivers_data:
+            self.__create_driver_from_data(driver)
+
+    def __create_driver_from_data(self, data):
+        location = Location.objects.create(
+            pos_x=data.get('x'), pos_y=data.get('y'))
+        Driver.objects.create(
+            name=data.get('name'), is_busy=data.get('is_busy'),
+            identification=data.get('identification'), location=location)
 
     def test_gas_station_complete_data(self):
         gas_station = GasStation.objects.create(
@@ -147,6 +164,19 @@ class GasStationModelTest(TestCase):
             str(gas_station), 'Gasolinería 2', 'Should be Gasolinería 2'
         )
 
+    def test_gas_station_update_nearby_driver(self):
+        location = Location.objects.create(pos_x=16, pos_y=19)
+        gas_station = GasStation.objects.create(
+            name='Gasolinería 2', has_gasoline=True, location=location)
+        gas_station.update_nearby_driver()
+        self.assertEqual(
+            gas_station.nearby_driver.name, 'Angie', 'Should be angie driver')
+        self.assertEqual(
+            gas_station.nearby_driver_distance, 1.414, 'Should be 1.414')
+        self.assertEquals(
+            gas_station.calculate_wait_time(), 2, 'Should be 2'
+        )
+
 
 class ServiceModelTest(TestCase):
     def setUp(self):
@@ -166,18 +196,21 @@ class ServiceModelTest(TestCase):
                          'status should be new by default')
 
     def __get_customer(self):
+        location = Location.objects.create(pos_x=10, pos_y=11)
         customer = Customer.objects.create(
-            name='denis cliente', identification='123')
+            identification='123', location=location)
         return customer
 
     def __get_driver(self):
+        location = Location.objects.create(pos_x=10, pos_y=13)
         driver = Driver.objects.create(
-            name='Denis conductor', identification='123')
+            name='Denis conductor', identification='123', location=location)
         return driver
 
     def __get_gas_station(self):
+        location = Location.objects.create(pos_x=10, pos_y=15)
         gas_station = GasStation.objects.create(
-            name='Gasolinearia test', has_gasoline=True)
+            name='Gasolinearia test', has_gasoline=True, location=location)
         return gas_station
 
     def test_service_str(self):
@@ -192,3 +225,19 @@ class ServiceModelTest(TestCase):
         self.assertEquals(
             str(service), 'Servicio: (Cliente 123) (Solicitado)',
             'Should be "Servicio: (Cliente 123) (Solicitado)"')
+
+    def test_calculate_time(self):
+        customer = self.__get_customer()
+        driver = self.__get_driver()
+        gas_station = self.__get_gas_station()
+        gas_station.update_nearby_driver()
+        distance = float(gas_station.nearby_driver_distance) + customer.\
+            location.calculate_distance(gas_station.location)
+        service = Service.objects.create(
+            date=datetime.now(), requesting_client=customer,
+            responsible_driver=driver, distance=distance,
+            nearby_gas_station=gas_station)
+
+        self.assertEqual(service.calculate_wait_time(), 6, 'Should be 6')
+
+

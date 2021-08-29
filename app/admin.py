@@ -19,9 +19,9 @@ class DriverAdmin(admin.ModelAdmin):
 
 
 class CustomerAdmin(admin.ModelAdmin):
-    fields = ('name', 'identification', 'location')
+    fields = ('identification', 'location')
     readonly_fields = ('created_at', 'updated_at')
-    list_display = ('name', 'identification', 'location')
+    list_display = ('identification', 'location')
 
 
 class GasStationAdmin(admin.ModelAdmin):

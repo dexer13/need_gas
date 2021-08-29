@@ -1,8 +1,8 @@
 import math
 from django.core.exceptions import ValidationError
 from django.db import models
-
 # Create your models here.
+from need_gas.PARAMETERS import VELOCITY
 
 
 class BaseModel(models.Model):
@@ -102,7 +102,6 @@ class Driver(BaseModel):
 
 
 class Customer(BaseModel):
-    name = models.CharField(max_length=200, verbose_name='Nombre')
     identification = models.CharField(
         max_length=15, verbose_name='Número de identificación')
     location = models.ForeignKey(
@@ -123,13 +122,30 @@ class GasStation(models.Model):
     has_gasoline = models.BooleanField(
         default=True, verbose_name='Tiene gasolina')
     nearby_driver_distance = models.DecimalField(
-        default=0, decimal_places=3, max_digits=10)
+        decimal_places=3, max_digits=10, null=True)
     location = models.ForeignKey(
         Location, verbose_name='Ubicación de la gasolinería', null=True,
         on_delete=models.PROTECT)
     nearby_driver = models.ForeignKey(
         Driver, on_delete=models.PROTECT, null=True,
         verbose_name='Conductor mas cercano')
+
+    def update_nearby_driver(self):
+        from .core import MapSimulator
+        nearby_driver = MapSimulator(self.location).get_nearby_driver()
+        driver_distance = self.location.calculate_distance(
+            nearby_driver.location)
+        self.nearby_driver = nearby_driver
+        self.nearby_driver_distance = driver_distance
+        self.save()
+
+    def calculate_wait_time(self):
+        time_street = abs(self.location.pos_x - self.nearby_driver.location.
+                          pos_x)
+        time_avenues = abs(self.location.pos_y - self.nearby_driver.location.
+                           pos_y)
+        return (time_street + time_avenues) * VELOCITY
+
 
     def __str__(self):
         return self.name
@@ -160,6 +176,14 @@ class Service(BaseModel):
         max_length=20, choices=DeliveryStatuses.choices,
         default=DeliveryStatuses.NEW, verbose_name='Estado del pedido')
     distance = models.IntegerField(verbose_name='Distancia')
+
+    def calculate_wait_time(self):
+        time_street = abs(self.requesting_client.location.pos_x -
+                          self.nearby_gas_station.location.pos_x)
+        time_avenues = abs(self.requesting_client.location.pos_y -
+                           self.nearby_gas_station.location.pos_y)
+        return (time_street + time_avenues +
+                self.nearby_gas_station.calculate_wait_time()) * VELOCITY
 
     def __str__(self):
         return f'Servicio: (Cliente {self.requesting_client}) ' \
