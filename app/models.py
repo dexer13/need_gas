@@ -1,8 +1,9 @@
 import math
 from django.core.exceptions import ValidationError
 from django.db import models
-# Create your models here.
 from need_gas.PARAMETERS import VELOCITY
+
+# Create your models here.
 
 
 class BaseModel(models.Model):
@@ -92,6 +93,10 @@ class Driver(BaseModel):
         Location, verbose_name='Ubicación del conductor', null=True,
         on_delete=models.PROTECT)
 
+    @property
+    def distance(self, target_location):
+        return self.location.calculate_distance(target_location)
+
     def __str__(self):
         return self.identification
 
@@ -140,11 +145,10 @@ class GasStation(models.Model):
         self.save()
 
     def calculate_wait_time(self):
-        time_street = abs(self.location.pos_x - self.nearby_driver.location.
-                          pos_x)
-        time_avenues = abs(self.location.pos_y - self.nearby_driver.location.
-                           pos_y)
-        return (time_street + time_avenues) * VELOCITY
+        from app.core import Util
+        time = Util.calculate_time_between_two_point(
+            self.location, self.nearby_driver.location)
+        return time * VELOCITY
 
 
     def __str__(self):
@@ -178,12 +182,11 @@ class Service(BaseModel):
     distance = models.IntegerField(verbose_name='Distancia')
 
     def calculate_wait_time(self):
-        time_street = abs(self.requesting_client.location.pos_x -
-                          self.nearby_gas_station.location.pos_x)
-        time_avenues = abs(self.requesting_client.location.pos_y -
-                           self.nearby_gas_station.location.pos_y)
-        return (time_street + time_avenues +
-                self.nearby_gas_station.calculate_wait_time()) * VELOCITY
+        from app.core import Util
+        time = Util.calculate_time_between_two_point(
+            self.requesting_client.location, self.nearby_gas_station.location)
+        return (time * VELOCITY) + self.nearby_gas_station.\
+            calculate_wait_time()
 
     def __str__(self):
         return f'Servicio: (Cliente {self.requesting_client}) ' \

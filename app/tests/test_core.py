@@ -1,5 +1,8 @@
 from unittest.mock import patch
 from django.test import TestCase
+
+from .test_setups import get_drivers_data, get_gas_stations_data, \
+    create_gas_station, create_driver
 from ..core import UpdateCustomer, MapSimulator
 from ..models import Customer, Driver, Location, GasStation
 
@@ -37,54 +40,20 @@ class TestCoreUpdateCustomer(TestCase):
 
 
 class TestMapSimulator(TestCase):
-    drivers_data = [
-        {'name': 'Juan', 'identification': '111', 'x': 20, 'y': 10,
-         'is_busy': True},
-        {'name': 'Angie', 'identification': '222', 'x': 15, 'y': 20,
-         'is_busy': False},
-        {'name': 'Camilo', 'identification': '333', 'x': 12, 'y': 14,
-         'is_busy': False},
-        {'name': 'Daniela', 'identification': '444', 'x': 9, 'y': 10,
-         'is_busy': True},
-        {'name': 'Sebastian', 'identification': '555', 'x': 22, 'y': 17,
-         'is_busy': True},
-        {'name': 'Andrea', 'identification': '666', 'x': 0, 'y': 0,
-         'is_busy': False},
-    ]
-    gas_station_data = [
-        {'name': 'Gasolineria 1', 'x': 5, 'y':16},
-        {'name': 'Gasolineria 2', 'x': 10, 'y':16},
-        {'name': 'Gasolineria 3', 'x': 3, 'y':16},
-        {'name': 'Gasolineria 4', 'x': 17, 'y':16},
-        {'name': 'Gasolineria 5', 'x': 20, 'y':16},
-    ]
+
     def setUp(self):
+        self.drivers_data = get_drivers_data()
+        self.gas_stations_data = get_gas_stations_data()
         self.__create_drivers()
         self.__create_gas_stations()
 
     def __create_gas_stations(self):
-        for gas_station in self.gas_station_data:
-            self.__create_gas_station(gas_station)
-
-    def __create_gas_station(self, data):
-        location = Location.objects.create(
-            pos_x=data.get('x'), pos_y=data.get('y'))
-        gas_station = GasStation.objects.create(
-            name=data.get('name'), location=location
-        )
-        gas_station.update_nearby_driver()
-
+        for gas_station in self.gas_stations_data:
+            create_gas_station(gas_station)
 
     def __create_drivers(self):
         for driver in self.drivers_data:
-            self.__create_driver(driver)
-
-    def __create_driver(self, data):
-        location = Location.objects.create(
-            pos_x=data.get('x'), pos_y=data.get('y'))
-        Driver.objects.create(
-            name=data.get('name'), is_busy=data.get('is_busy'),
-            identification=data.get('identification'), location=location)
+            create_driver(driver)
 
     def test_get_drivers(self):
         drivers = MapSimulator(Location(pos_x=1, pos_y=1)).get_drivers()

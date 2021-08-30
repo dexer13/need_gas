@@ -78,3 +78,11 @@ class MapSimulator:
         return objects_sorted
 
 
+class Util:
+
+    @staticmethod
+    def calculate_time_between_two_point(point_a, point_b):
+        time_x = abs(point_a.pos_x - point_b.pos_x)
+        time_y = abs(point_a.pos_y - point_b.pos_y)
+        return time_x + time_y
+
