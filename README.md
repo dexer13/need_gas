@@ -38,7 +38,7 @@ Creación del entorno virtual en el sistema operativo con [virtualenvwrapper](ht
 
 ```shell script
  $ mkvirtualenv project -p /usr/bin/python3.x
- $ workon proyect_env
+ $ workon project_env
 ```
 Clonar el repositorio privado desde GitHub
 ```shell script

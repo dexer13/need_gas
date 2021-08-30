@@ -5,20 +5,14 @@ from need_gas.PARAMETERS import VELOCITY
 
 # Create your models here.
 
-
-class BaseModel(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True, editable=False)
-    updated_at = models.DateTimeField(auto_now=True, editable=False)
-
-    class Meta:
-        db_table = 'Modelo base'
-
-
-class City(BaseModel):
+class City(models.Model):
     name = models.CharField(max_length=30, verbose_name='Nombre')
     width = models.IntegerField(verbose_name='Ancho')
     height = models.IntegerField(verbose_name='Alto')
     velocity = models.IntegerField(verbose_name='Velocidad')
+
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
 
     def clean(self):
         self.__clean_width()
@@ -84,14 +78,17 @@ class Location(models.Model):
         verbose_name_plural = 'Ubicaciones'
 
 
-class Driver(BaseModel):
+class Driver(models.Model):
     name = models.CharField(max_length=200, verbose_name='Nombre')
     identification = models.CharField(
         max_length=15, verbose_name='Número de identificación')
     is_busy = models.BooleanField(default=False)
     location = models.ForeignKey(
         Location, verbose_name='Ubicación del conductor', null=True,
-        on_delete=models.PROTECT)
+        on_delete=models.SET_NULL)
+
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
 
     @property
     def distance(self, target_location):
@@ -106,12 +103,15 @@ class Driver(BaseModel):
         verbose_name_plural = 'Conductores'
 
 
-class Customer(BaseModel):
+class Customer(models.Model):
     identification = models.CharField(
         max_length=15, verbose_name='Número de identificación')
     location = models.ForeignKey(
         Location, verbose_name='Ubicación del cliente', null=True,
         on_delete=models.PROTECT)
+
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
         return self.identification
@@ -160,7 +160,7 @@ class GasStation(models.Model):
         verbose_name_plural = 'Gasolinerias'
 
 
-class Service(BaseModel):
+class Service(models.Model):
     class DeliveryStatuses(models.TextChoices):
         NEW = 'new', 'Solicitado'
         PICK_UP = 'pick_up', 'Recogiendo Gasolina'
@@ -180,6 +180,9 @@ class Service(BaseModel):
         max_length=20, choices=DeliveryStatuses.choices,
         default=DeliveryStatuses.NEW, verbose_name='Estado del pedido')
     distance = models.IntegerField(verbose_name='Distancia')
+
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(auto_now=True, editable=False)
 
     def calculate_wait_time(self):
         from app.core import Util

@@ -1,0 +1,132 @@
+[
+  {
+    "pk": 1,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 15,
+      "pos_y": 10
+    }
+  },
+  {
+    "pk": 2,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 30,
+      "pos_y": 18
+    }
+  },
+  {
+    "pk": 3,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 56,
+      "pos_y": 9
+    }
+  },
+  {
+    "pk": 4,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 77,
+      "pos_y": 5
+    }
+  },
+  {
+    "pk": 5,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 23,
+      "pos_y": 49
+    }
+  },
+  {
+    "pk": 6,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 56,
+      "pos_y": 48
+    }
+  },
+  {
+    "pk": 7,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 74,
+      "pos_y": 35
+    }
+  },
+  {
+    "pk": 8,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 87,
+      "pos_y": 89
+    }
+  },
+  {
+    "pk": 9,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 45,
+      "pos_y": 86
+    }
+  },
+  {
+    "pk": 10,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 45,
+      "pos_y": 86
+    }
+  },
+  {
+    "pk": 11,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 0,
+      "pos_y": 9
+    }
+  },
+
+
+  {
+    "pk": 12,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 12,
+      "pos_y": 45
+    }
+  },
+  {
+    "pk": 13,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 55,
+      "pos_y": 69
+    }
+  },
+  {
+    "pk": 14,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 75,
+      "pos_y": 84
+    }
+  },
+  {
+    "pk": 15,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 23,
+      "pos_y": 16
+    }
+  },
+  {
+    "pk": 16,
+    "model": "app.location",
+    "fields": {
+      "pos_x": 74,
+      "pos_y": 36
+    }
+  }
+]

@@ -1,0 +1,134 @@
+[
+  {
+    "pk": 1,
+    "model": "app.driver",
+    "fields": {
+      "name": "Conductor 1",
+      "identification": "111",
+      "is_busy":true,
+      "location": 1,
+      "created_at": "2021-08-30T00:00:00.511Z",
+      "updated_at": "2021-08-30T00:00:00.511Z"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "app.driver",
+    "fields": {
+      "name": "Conductor 2",
+      "identification": "222",
+      "is_busy": true,
+      "location": 2,
+      "created_at": "2021-08-30T00:00:00.511Z",
+      "updated_at": "2021-08-30T00:00:00.511Z"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "app.driver",
+    "fields": {
+      "name": "Conductor 3",
+      "identification": "333",
+      "is_busy": true,
+      "location": 3,
+      "created_at": "2021-08-30T00:00:00.511Z",
+      "updated_at": "2021-08-30T00:00:00.511Z"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "app.driver",
+    "fields": {
+      "name": "Conductor 4",
+      "identification": "444",
+      "is_busy": true,
+      "location": 4,
+      "created_at": "2021-08-30T00:00:00.511Z",
+      "updated_at": "2021-08-30T00:00:00.511Z"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "app.driver",
+    "fields": {
+      "name": "Conductor 5",
+      "identification": "555",
+      "is_busy": true,
+      "location": 5,
+      "created_at": "2021-08-30T00:00:00.511Z",
+      "updated_at": "2021-08-30T00:00:00.511Z"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "app.driver",
+    "fields": {
+      "name": "Conductor 6",
+      "identification": "666",
+      "is_busy": true,
+      "location": 6,
+      "created_at": "2021-08-30T00:00:00.511Z",
+      "updated_at": "2021-08-30T00:00:00.511Z"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "app.driver",
+    "fields": {
+      "name": "Conductor 7",
+      "identification": "777",
+      "is_busy": true,
+      "location": 7,
+      "created_at": "2021-08-30T00:00:00.511Z",
+      "updated_at": "2021-08-30T00:00:00.511Z"
+    }
+  },
+  {
+    "pk": 8,
+    "model": "app.driver",
+    "fields": {
+      "name": "Conductor 8",
+      "identification": "888",
+      "is_busy": true,
+      "location": 8,
+      "created_at": "2021-08-30T00:00:00.511Z",
+      "updated_at": "2021-08-30T00:00:00.511Z"
+    }
+  },
+  {
+    "pk": 9,
+    "model": "app.driver",
+    "fields": {
+      "name": "Conductor 9",
+      "identification": "999",
+      "is_busy": true,
+      "location": 9,
+      "created_at": "2021-08-30T00:00:00.511Z",
+      "updated_at": "2021-08-30T00:00:00.511Z"
+    }
+  },
+  {
+    "pk": 10,
+    "model": "app.driver",
+    "fields": {
+      "name": "Conductor 10",
+      "identification": "101010",
+      "is_busy": true,
+      "location": 10,
+      "created_at": "2021-08-30T00:00:00.511Z",
+      "updated_at": "2021-08-30T00:00:00.511Z"
+    }
+  },
+  {
+    "pk": 11,
+    "model": "app.driver",
+    "fields": {
+      "name": "Conductor 11",
+      "identification": "111111",
+      "is_busy": true,
+      "location": 11,
+      "created_at": "2021-08-30T00:00:00.511Z",
+      "updated_at": "2021-08-30T00:00:00.511Z"
+    }
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "pk": 1,
+    "model": "app.gasstation",
+    "fields": {
+      "name": "Gasolinera 1",
+      "has_gasoline": true,
+      "nearby_driver_distance": null,
+      "location": 12
+    }
+  },
+  {
+    "pk": 2,
+    "model": "app.gasstation",
+    "fields": {
+      "name": "Gasolinera 2",
+      "has_gasoline": true,
+      "nearby_driver_distance": null,
+      "location": 13
+    }
+  },
+  {
+    "pk": 3,
+    "model": "app.gasstation",
+    "fields": {
+      "name": "Gasolinera 3",
+      "has_gasoline": true,
+      "nearby_driver_distance": null,
+      "location": 14
+    }
+  },
+  {
+    "pk": 4,
+    "model": "app.gasstation",
+    "fields": {
+      "name": "Gasolinera 4",
+      "has_gasoline": true,
+      "nearby_driver_distance": null,
+      "location": 15
+    }
+  },
+  {
+    "pk": 5,
+    "model": "app.gasstation",
+    "fields": {
+      "name": "Gasolinera 5",
+      "has_gasoline": true,
+      "nearby_driver_distance": null,
+      "location": 16
+    }
+  }
+]
