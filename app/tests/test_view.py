@@ -3,6 +3,8 @@ from django.urls import reverse
 
 from .test_setups import create_customers, create_drivers, \
     create_gas_stations, create_services
+from ..core import MapSimulator
+from ..models import Customer, Driver, Service
 
 
 class ServicesViewTest(APITestCase):
@@ -19,6 +21,9 @@ class ServicesViewTest(APITestCase):
             'require_a_service', args=[10, 12])
         self.drivers_sorted_by_distance_url = reverse(
             'drivers_sorted_by_distance', args=[20, 15])
+        self.info_map_url = reverse('info_map')
+        self.request_service_url= reverse('request_service', args=['3'])
+
 
     def test_services_by_date(self):
         response = self.client.get(self.services_by_date_url)
@@ -75,4 +80,29 @@ class ServicesViewTest(APITestCase):
         self.assertEqual(
             response.json()[0].get('identification'), '555',
             'Should be a driver with 555 identification')
+
+    def test_info_map(self):
+        response = self.client.get(self.info_map_url)
+        self.assertEqual(response.status_code, 200, 'Should be OK status')
+        data = response.json()
+        self.assertEquals(len(data.get('drivers')), 6, 'Should be 6 drivers')
+        self.assertEquals(
+            len(data.get('gas_stations')), 5, 'Should be 5 gas stations')
+        self.assertEquals(
+            len(data.get('customers')), 3, 'Should be 3 customers')
+
+    def test_request_service(self):
+        response = self.client.get(self.request_service_url)
+        self.assertEqual(response.status_code, 200, 'Should be OK status')
+        data = response.json()
+        self.assertEqual(
+            data.get('responsible_driver'), '333',
+            "Should be 333 driver's identification")
+        driver_busy = Driver.objects.get(identification='333')
+        self.assertTrue(driver_busy.is_busy)
+
+    def test_request_service_service_concurrent(self):
+        self.client.get(self.request_service_url)
+        response = self.client.get(self.request_service_url)
+        self.assertEqual(response.status_code, 403, 'Should be FORBIDDEN')
 

@@ -76,7 +76,7 @@
     "model": "app.location",
     "fields": {
       "pos_x": 45,
-      "pos_y": 86
+      "pos_y": 26
     }
   },
   {

@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import ServiceCustomerListView, ServiceDriverListView, \
-    ServiceRequireServiceView, DriversByLocationListView
+    ServiceRequireServiceView, DriversByLocationListView, MapInfoView, \
+    RequestServiceView
 
 
 urlpatterns = [
@@ -15,4 +16,7 @@ urlpatterns = [
     path('drivers_sorted_by_distance/<int:x>/<int:y>/',
          DriversByLocationListView.as_view(),
          name='drivers_sorted_by_distance'),
+    path('info_map/', MapInfoView.as_view(), name='info_map'),
+    path('request_service/<str:client_identification>/',
+         RequestServiceView.as_view(), name='request_service'),
 ]

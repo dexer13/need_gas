@@ -1,4 +1,4 @@
-from .models import Service, Driver
+from .models import Service, Driver, GasStation, Customer
 from rest_framework import serializers
 
 
@@ -24,3 +24,26 @@ class DriverDistanceSerializer(serializers.ModelSerializer):
         model = Driver
         fields = ['name', 'identification', 'is_busy', 'location', 'distance']
 
+
+class DriverSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Driver
+        fields = '__all__'
+        depth = 1
+
+
+class GasStationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = GasStation
+        fields = '__all__'
+        depth = 1
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Customer
+        fields = '__all__'
+        depth = 1

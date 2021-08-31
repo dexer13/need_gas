@@ -5,7 +5,7 @@
     "fields": {
       "name": "Conductor 1",
       "identification": "111",
-      "is_busy":true,
+      "is_busy":false,
       "location": 1,
       "created_at": "2021-08-30T00:00:00.511Z",
       "updated_at": "2021-08-30T00:00:00.511Z"
@@ -17,7 +17,7 @@
     "fields": {
       "name": "Conductor 2",
       "identification": "222",
-      "is_busy": true,
+      "is_busy": false,
       "location": 2,
       "created_at": "2021-08-30T00:00:00.511Z",
       "updated_at": "2021-08-30T00:00:00.511Z"
@@ -29,7 +29,7 @@
     "fields": {
       "name": "Conductor 3",
       "identification": "333",
-      "is_busy": true,
+      "is_busy": false,
       "location": 3,
       "created_at": "2021-08-30T00:00:00.511Z",
       "updated_at": "2021-08-30T00:00:00.511Z"
@@ -41,7 +41,7 @@
     "fields": {
       "name": "Conductor 4",
       "identification": "444",
-      "is_busy": true,
+      "is_busy": false,
       "location": 4,
       "created_at": "2021-08-30T00:00:00.511Z",
       "updated_at": "2021-08-30T00:00:00.511Z"
@@ -53,7 +53,7 @@
     "fields": {
       "name": "Conductor 5",
       "identification": "555",
-      "is_busy": true,
+      "is_busy": false,
       "location": 5,
       "created_at": "2021-08-30T00:00:00.511Z",
       "updated_at": "2021-08-30T00:00:00.511Z"
@@ -65,7 +65,7 @@
     "fields": {
       "name": "Conductor 6",
       "identification": "666",
-      "is_busy": true,
+      "is_busy": false,
       "location": 6,
       "created_at": "2021-08-30T00:00:00.511Z",
       "updated_at": "2021-08-30T00:00:00.511Z"
@@ -77,7 +77,7 @@
     "fields": {
       "name": "Conductor 7",
       "identification": "777",
-      "is_busy": true,
+      "is_busy": false,
       "location": 7,
       "created_at": "2021-08-30T00:00:00.511Z",
       "updated_at": "2021-08-30T00:00:00.511Z"
@@ -89,7 +89,7 @@
     "fields": {
       "name": "Conductor 8",
       "identification": "888",
-      "is_busy": true,
+      "is_busy": false,
       "location": 8,
       "created_at": "2021-08-30T00:00:00.511Z",
       "updated_at": "2021-08-30T00:00:00.511Z"
@@ -101,7 +101,7 @@
     "fields": {
       "name": "Conductor 9",
       "identification": "999",
-      "is_busy": true,
+      "is_busy": false,
       "location": 9,
       "created_at": "2021-08-30T00:00:00.511Z",
       "updated_at": "2021-08-30T00:00:00.511Z"
@@ -113,7 +113,7 @@
     "fields": {
       "name": "Conductor 10",
       "identification": "101010",
-      "is_busy": true,
+      "is_busy": false,
       "location": 10,
       "created_at": "2021-08-30T00:00:00.511Z",
       "updated_at": "2021-08-30T00:00:00.511Z"
@@ -125,7 +125,7 @@
     "fields": {
       "name": "Conductor 11",
       "identification": "111111",
-      "is_busy": true,
+      "is_busy": false,
       "location": 11,
       "created_at": "2021-08-30T00:00:00.511Z",
       "updated_at": "2021-08-30T00:00:00.511Z"

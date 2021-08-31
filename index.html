@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        #my-canvas { border: 1px solid gray; }
+    </style>
+</head>
+<body>
+  <canvas id="my-canvas" width="600" height="600"></canvas>
+  <script>
+
+    var scale = 6;
+    var delayInMilliseconds = 5000; //5s
+    function drawPoint(x, y, label, color, size) {
+      	if (color == null) {
+        	color = '#000';
+        }
+
+        if (size == null) {
+            size = 5;
+        }
+
+      	var radius = 0.5 * size;
+
+      	// to increase smoothing for numbers with decimal part
+		var pointX = Math.round(x - radius);
+        var pointY = Math.round(y - radius);
+
+        context.beginPath();
+        context.fillStyle = color;
+      	context.fillRect(pointX, pointY, size, size);
+        context.fill();
+
+      	if (label) {
+            var textX = Math.round(x);
+          	var textY = Math.round(pointY - 5);
+
+            context.font = 'Italic 10px Arial';
+            context.fillStyle = color;
+            context.textAlign = 'center';
+            context.fillText(label, textX, textY);
+        }
+    }
+
+
+    // Usage example:
+
+    var canvas = document.querySelector('#my-canvas');
+    var context = canvas.getContext('2d');
+
+    var map_info = null
+    axios({
+          method: 'get',
+          url: 'http://127.0.0.1:8000/api/v1/info_map/',
+          })
+            .then(function (data){
+              var drivers = data.data.drivers;
+              var gas_stations = data.data.gas_stations;
+              var customers = data.data.customers;
+              drivers.forEach(function (driver){
+                  drawPoint(
+                      driver.location.pos_x*scale, driver.location.pos_y*scale,
+                      'C'+driver.identification, driver.is_busy?'red':'green',
+                      driver.is_busy?2:5)
+              });
+              gas_stations.forEach(function(gas_station){
+                  drawPoint(
+                      gas_station.location.pos_x*scale,
+                      gas_station.location.pos_y*scale,
+                      'G ('+gas_station.location.pos_x+','+gas_station.location.pos_y+')',
+                      'orange', 8
+                  )
+              })
+              customers.forEach(function(customer){
+                  drawPoint(
+                      customer.location.pos_x*scale,
+                      customer.location.pos_y*scale,
+                      'C '+customer.id, 'blue', 2
+                  )
+              })
+          })
+    setTimeout(() => {
+        location.reload();
+        }, delayInMilliseconds)
+
+
+
+  </script>
+</body>
+</html>

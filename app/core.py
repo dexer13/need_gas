@@ -1,5 +1,8 @@
 import requests
-from .models import Customer, Location, Driver, GasStation
+import time
+
+from need_gas.PARAMETERS import VELOCITY
+from .models import Customer, Location, Driver, GasStation, Service
 
 
 class UpdateCustomer:
@@ -62,7 +65,10 @@ class MapSimulator:
         return self.__sorted_objects_by_distance(drivers)
 
     def get_nearby_driver(self):
-        return self.get_drivers_no_busy()[0]
+        drivers_no_busy = self.get_drivers_no_busy()
+        if not drivers_no_busy:
+            return None
+        return drivers_no_busy[0]
 
     def get_gas_station_nearby(self):
         gas_stations = list(GasStation.objects.filter(has_gasoline=True).all())
@@ -84,5 +90,59 @@ class Util:
     def calculate_time_between_two_point(point_a, point_b):
         time_x = abs(point_a.pos_x - point_b.pos_x)
         time_y = abs(point_a.pos_y - point_b.pos_y)
-        return time_x + time_y
+        return (time_x + time_y) * VELOCITY
 
+
+class Delivery:
+
+    def __init__(self, service):
+        self.service = Service.objects.get(id=service)
+
+    def start_delivery(self):
+        self.__goto_gas_station()
+        self.__goto_customer_location()
+        self.__deliver_product()
+
+    def __goto_gas_station(self):
+        print('En camino a la gasolinera')
+        self.__updated_status_service(Service.DeliveryStatuses.PICK_UP)
+        wait_time_to_gas_station = Util.calculate_time_between_two_point(
+            self.service.nearby_gas_station.location,
+            self.service.responsible_driver.location)
+        time.sleep(wait_time_to_gas_station)
+        self.__update_delivery_man_location(
+            self.service.nearby_gas_station.location)
+
+    def __goto_customer_location(self):
+        print('En camino a la entrega')
+        self.__updated_status_service(Service.DeliveryStatuses.ON_DELIVERY)
+        wait_time_to_customer = Util.calculate_time_between_two_point(
+            self.service.nearby_gas_station.location,
+            self.service.requesting_client.location)
+        time.sleep(wait_time_to_customer)
+        self.__update_delivery_man_location(
+            self.service.requesting_client.location)
+
+    def __deliver_product(self):
+        self.__updated_status_service(Service.DeliveryStatuses.DELIVERED)
+        self.__free_driver()
+        print('Entregando el producto')
+        self.__update_gas_stations()
+
+    def __update_gas_stations(self):
+        for gas_station in GasStation.objects.all():
+            gas_station.update_nearby_driver()
+
+    def __free_driver(self):
+        self.service.responsible_driver.is_busy = False
+        self.service.responsible_driver.save()
+
+    def __update_delivery_man_location(self, new_location):
+        delivery_man = self.service.responsible_driver
+        delivery_man.location.pos_x = new_location.pos_x
+        delivery_man.location.pos_y = new_location.pos_y
+        delivery_man.location.save()
+
+    def __updated_status_service(self, status):
+        self.service.status = status
+        self.service.save()

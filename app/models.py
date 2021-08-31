@@ -82,7 +82,7 @@ class Driver(models.Model):
     name = models.CharField(max_length=200, verbose_name='Nombre')
     identification = models.CharField(
         max_length=15, verbose_name='Número de identificación')
-    is_busy = models.BooleanField(default=False)
+    is_busy = models.BooleanField(default=False, verbose_name='Ocupado')
     location = models.ForeignKey(
         Location, verbose_name='Ubicación del conductor', null=True,
         on_delete=models.SET_NULL)
@@ -138,6 +138,8 @@ class GasStation(models.Model):
     def update_nearby_driver(self):
         from .core import MapSimulator
         nearby_driver = MapSimulator(self.location).get_nearby_driver()
+        if not nearby_driver:
+            return
         driver_distance = self.location.calculate_distance(
             nearby_driver.location)
         self.nearby_driver = nearby_driver
@@ -148,7 +150,7 @@ class GasStation(models.Model):
         from app.core import Util
         time = Util.calculate_time_between_two_point(
             self.location, self.nearby_driver.location)
-        return time * VELOCITY
+        return time
 
 
     def __str__(self):
@@ -156,8 +158,8 @@ class GasStation(models.Model):
 
     class Meta:
         db_table = 'gas_station'
-        verbose_name = 'Gasolineria'
-        verbose_name_plural = 'Gasolinerias'
+        verbose_name = 'Gasolinera'
+        verbose_name_plural = 'Gasolineras'
 
 
 class Service(models.Model):
@@ -188,8 +190,7 @@ class Service(models.Model):
         from app.core import Util
         time = Util.calculate_time_between_two_point(
             self.requesting_client.location, self.nearby_gas_station.location)
-        return (time * VELOCITY) + self.nearby_gas_station.\
-            calculate_wait_time()
+        return time + self.nearby_gas_station.calculate_wait_time()
 
     def __str__(self):
         return f'Servicio: (Cliente {self.requesting_client}) ' \

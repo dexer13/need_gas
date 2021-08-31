@@ -177,6 +177,17 @@ class GasStationModelTest(TestCase):
             gas_station.calculate_wait_time(), 2, 'Should be 2'
         )
 
+    def test_gas_station_there_are_no_nearby_driver(self):
+        Driver.objects.filter().update(is_busy=True)
+        location = Location.objects.create(pos_x=16, pos_y=19)
+        gas_station = GasStation.objects.create(
+            name='Gasolinería 2', has_gasoline=True, location=location)
+        gas_station.update_nearby_driver()
+        self.assertIsNone(
+            gas_station.nearby_driver, 'Should not have a nearby_driver')
+
+
+
 
 class ServiceModelTest(TestCase):
     def setUp(self):
