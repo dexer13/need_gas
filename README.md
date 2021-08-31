@@ -7,7 +7,7 @@
 3. [IDE](#ide)
 4. [Instalación](#instalación)
 5. [Servicios](#servicios)
-6. [Autores](#autores)
+6. [Autor](#autor)
 ***
 
 #### Características:
