@@ -80,7 +80,7 @@ Levantar el proyecto
 ```
 Ejecutar celery
 ```shell script
- $ celery -A app worker -l info
+ $ celery -A need_gas worker -l info
 ```
 ***
 ### Servicios
