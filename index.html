@@ -2,12 +2,26 @@
 <html>
 <head>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <style>
         #my-canvas { border: 1px solid gray; }
     </style>
 </head>
 <body>
-  <canvas id="my-canvas" width="600" height="600"></canvas>
+    <div class="content">
+        <div class="row">
+            <div class="col-md-7 text-center">
+                <canvas id="my-canvas" width="600" height="600"></canvas>
+            </div>
+            <div class="col-md-4">
+                <h4 style="color: green">Conductores libres</h4>
+                <h4 style="color: red">Conductores Ocupados</h4>
+                <h4 style="color: orange">Estaciones de gasolina</h4>
+                <h4 style="color: blue">Clientes</h4>
+            </div>
+        </div>
+    </div>
+
   <script>
 
     var scale = 6;
@@ -87,5 +101,6 @@
 
 
   </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 </body>
 </html>
